@@ -50,7 +50,7 @@ ax.set_xlabel('Product Category')
 st.pyplot(fig)
 
 # Display Gender based sales
-# Sales by Gender
+
 st.subheader('Sales by Gender')
 gender_sales = df.groupby("Gender")["Total Amount"].sum().reset_index()
 fig = px.bar(gender_sales, x='Gender', y='Total Amount', text='Total Amount',
@@ -62,12 +62,35 @@ fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
 st.plotly_chart(fig)
 
 # display sales trends over time
-st.subheader('Sales Trends over Time')
-sales_by_date = df.groupby("Date")["Total Amount"].sum().reset_index()
-fig = px.line(sales_by_date, x='Date', y='Total Amount', text='Total Amount',
-             hover_data={'Total Amount': ':,.2f'}, labels={'Total Amount':'Total Sales'},
-             color_discrete_sequence=['#D9534F'])
-fig.update_traces(texttemplate='%{text:.2s}', textposition='top center')
-fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
+st.subheader("Sales Over Time")
+time_series = df.groupby('Date')['Total Amount'].sum().reset_index()
+fig = px.line(time_series, x='Date', y='Total Amount', labels={'Total Amount': 'Total Sales'})
 st.plotly_chart(fig)
+
+
+#display the purchase by age group
+st.subheader('Purchase by Age Group')
+age_group_sales = df.groupby("Age")["Total Amount"].sum().reset_index()
+fig = px.bar(age_group_sales, x='Age', y='Total Amount', text='Total Amount',
+             hover_data={'Total Amount': ':,.2f'}, labels={'Total Amount':'Total Sales'},
+             color='Age', color_discrete_map={'18-24': 'pink', '25-34': 'blue', '35-44': 'green', '45-54': 'red', '55-64': 'yellow'})
+fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
+fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
+
+st.plotly_chart(fig)
+
+# display the quantity of products sold by product category
+
+st.subheader('Quantity of Products Sold by Product Category')
+quantity_by_category = df.groupby("Product Category")["Quantity"].sum().reset_index()
+fig = px.bar(quantity_by_category, x='Product Category', y='Quantity', text='Quantity',
+             hover_data={'Quantity': ':,.2f'}, labels={'Quantity':'Quantity of Products Sold'},
+             color='Product Category', color_discrete_map={'Furniture': 'pink', 'Office Supplies': 'blue', 'Technology': 'green'})
+fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
+fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
+
+st.plotly_chart(fig)
+
+
+
 
