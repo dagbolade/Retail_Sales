@@ -40,6 +40,16 @@ if st.checkbox('Show Filtered Raw Data'):
 total_sales = filtered_df["Total Amount"].sum()
 st.subheader(f'Total Sales for {selected_categories}: ${total_sales:,.2f}')
 
+# Display total quantity of products sold
+total_quantity = filtered_df["Quantity"].sum()
+st.subheader(f'Total Quantity of Products Sold for {selected_categories}: {total_quantity:,.2f}')
+
+# Display total number of customers
+total_customers = filtered_df["Customer ID"].nunique()
+st.subheader(f'Total Number of Customers for {selected_categories}: {total_customers:,.2f}')
+
+
+
 # Display sales by all product category using seaborn
 st.subheader('Sales by Product Category')
 sales_by_category = filtered_df.groupby("Product Category")["Total Amount"].sum()
