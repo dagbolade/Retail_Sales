@@ -16,9 +16,20 @@ st.title('Retail Sales Dashboard')
 
 # Interactive Filters
 age_slider = st.slider("Select Age Range", int(df["Age"].min()), int(df["Age"].max()), (18, 64))
-category_dropdown = st.selectbox("Select Product Category", options=df["Product Category"].unique().tolist(), index=0)
 
-filtered_df = df[(df["Age"] >= age_slider[0]) & (df["Age"] <= age_slider[1]) & (df["Product Category"] == category_dropdown)]
+# Multiselect for product category
+selected_categories = st.multiselect('Select Product Category', options=df['Product Category'].unique())
+
+# Filter the dataframe based on selected categories and age range
+if selected_categories:
+    # If categories are selected, filter by both age and category
+    filtered_df = df[(df["Age"] >= age_slider[0]) & (df["Age"] <= age_slider[1])]
+    filtered_df = filtered_df[filtered_df['Product Category'].isin(selected_categories)]
+else:
+    # If no categories are selected, filter by age only
+    filtered_df = df[(df["Age"] >= age_slider[0]) & (df["Age"] <= age_slider[1])]
+
+
 
 # Display raw data on demand
 if st.checkbox('Show Filtered Raw Data'):
@@ -27,7 +38,7 @@ if st.checkbox('Show Filtered Raw Data'):
 
 # Display total sales
 total_sales = filtered_df["Total Amount"].sum()
-st.subheader(f'Total Sales for {category_dropdown}: ${total_sales:,.2f}')
+st.subheader(f'Total Sales for {selected_categories}: ${total_sales:,.2f}')
 
 # Display sales by all product category using seaborn
 st.subheader('Sales by Product Category')
@@ -50,4 +61,13 @@ fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
 
 st.plotly_chart(fig)
 
+# display sales trends over time
+st.subheader('Sales Trends over Time')
+sales_by_date = df.groupby("Date")["Total Amount"].sum().reset_index()
+fig = px.line(sales_by_date, x='Date', y='Total Amount', text='Total Amount',
+             hover_data={'Total Amount': ':,.2f'}, labels={'Total Amount':'Total Sales'},
+             color_discrete_sequence=['#D9534F'])
+fig.update_traces(texttemplate='%{text:.2s}', textposition='top center')
+fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
+st.plotly_chart(fig)
 
