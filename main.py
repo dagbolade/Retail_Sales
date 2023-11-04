@@ -72,7 +72,7 @@ fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
 st.plotly_chart(fig)
 
 # display sales trends over time
-st.subheader("Sales Over Time")
+st.subheader("Sales Trends Over Time")
 time_series = df.groupby('Date')['Total Amount'].sum().reset_index()
 fig = px.line(time_series, x='Date', y='Total Amount', labels={'Total Amount': 'Total Sales'})
 st.plotly_chart(fig)
