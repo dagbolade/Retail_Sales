@@ -43,7 +43,8 @@ st.pyplot(fig)
 st.subheader('Sales by Gender')
 gender_sales = df.groupby("Gender")["Total Amount"].sum().reset_index()
 fig = px.bar(gender_sales, x='Gender', y='Total Amount', text='Total Amount',
-             hover_data={'Total Amount': ':,.2f'}, labels={'Total Amount':'Total Sales'})
+             hover_data={'Total Amount': ':,.2f'}, labels={'Total Amount':'Total Sales'},
+             color='Gender', color_discrete_map={'Female': 'pink', 'Male': 'blue'})
 fig.update_traces(texttemplate='%{text:.2s}', textposition='outside')
 fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
 
