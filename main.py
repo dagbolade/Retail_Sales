@@ -15,7 +15,7 @@ df = load_data()
 st.title('Retail Sales Dashboard')
 
 # Interactive Filters
-age_slider = st.slider("Select Age Range", int(df["Age"].min()), int(df["Age"].max()), (18, 60))
+age_slider = st.slider("Select Age Range", int(df["Age"].min()), int(df["Age"].max()), (18, 64))
 category_dropdown = st.selectbox("Select Product Category", options=df["Product Category"].unique().tolist(), index=0)
 
 filtered_df = df[(df["Age"] >= age_slider[0]) & (df["Age"] <= age_slider[1]) & (df["Product Category"] == category_dropdown)]
