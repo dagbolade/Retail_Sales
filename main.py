@@ -101,6 +101,10 @@ fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
 
 st.plotly_chart(fig)
 
-
+# display what products category generated the highest revenue
+st.subheader('Product Category that Generated the Highest Revenue')
+category_revenue = df.groupby("Product Category")["Total Amount"].sum().reset_index()
+fig = px.pie(category_revenue, values='Total Amount', names='Product Category', title='Product Category that Generated the Highest Revenue')
+st.plotly_chart(fig)
 
 
